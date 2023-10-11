@@ -5,6 +5,22 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  get '/posts', to: 'posts#index'
-  get '/post/:id', to: 'posts#show'
+  
+
+
+
+  namespace :api do
+    namespace :v1 do
+    resources :users
+    post '/auth/sign-in', to: 'auth#signIn'
+    post '/auth/sign-up', to: 'auth#signUp'
+
+    get '/profile', to: 'users#profile'
+
+    get '/posts', to: 'posts#index'
+    get '/post/:id', to: 'posts#show'
+
+    end 
+  end 
+
 end
