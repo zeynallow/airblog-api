@@ -1,33 +1,38 @@
 class Api::V1::AuthController < ApplicationController
-    #skip_before_action :authorized, only: [:signUp]
-     
-      
-      def signIn
-        @user = User.find_by(username: user_login_params[:username])
-        #user.authenticate comes from bcrypt
-        if @user && @user.authenticate(user_login_params[:password])
-          # encode token comes from application controller
-          token = encode_token({ user_id: @user.id })
-          render json: { user: UserSerializer.new(@user), jwt: token }, status: :accepted
-        else
-          render json: { error: 'Incorrect username or password' }, status: :unauthorized
-        end
-      end
+  #before_action :authorize_request, except: %i[signIn,signUp]
 
-      def signUp
-        @user = User.create(user_login_params)
-        if @user.valid?
-          @token = encode_token(user_id: @user.id)
-          render json: { user: UserSerializer.new(@user), jwt: @token}, status: :created
-        else 
-          render json: { error: 'That username already exists. Try again.' }, status: :not_acceptable
-        end
-      end
-     
-      private
-     
-      def user_login_params
-        params.require(:user).permit(:username, :password)
-      end
-
+  def signIn
+    @user = User.find_by_email(params[:email])
+    if @user&.authenticate(params[:password])
+      token = JsonWebToken.encode(user_id: @user.id)
+      time = Time.now + 24.hours.to_i
+      render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"),
+                     username: @user.username }, status: :ok
+    else
+      render json: { error: 'unauthorized' }, status: :unauthorized
     end
+  end
+
+  def signUp
+    @user = User.new(user_params)
+    if @user.save
+      render json: @user, status: :created
+    else
+      render json: { errors: @user.errors.full_messages },
+             status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def login_params
+    params.permit(:email, :password)
+  end
+
+  def user_params
+    params.permit(
+       :name, :username, :email, :password, :password_confirmation
+    )
+  end
+
+end
