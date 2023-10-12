@@ -15,15 +15,17 @@ Rails.application.routes.draw do
       put '/profile', to: 'profile#update'
       get '/profile/:id', to: 'profile#get_user'
 
-
       get '/posts', to: 'posts#index'
       get '/post/:id', to: 'posts#show'
       post '/post/create', to: 'posts#create'
       put '/post/:id', to: 'posts#update'
       delete '/post/:id', to: 'posts#delete'
 
-      # get '/posts', to: 'posts#index'
-      # get '/post/:id', to: 'posts#show'
+      get '/post/:id/comments', to: 'comments#get_comments'
+      post '/post/:id/comments', to: 'comments#create'
+
+      put '/comments/:id', to: 'comments#update'
+      delete '/comments/:id', to: 'comments#delete'
 
     end
   end

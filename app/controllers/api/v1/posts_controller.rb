@@ -1,10 +1,5 @@
 class Api::V1::PostsController < ApplicationController
   before_action :authorize_request, except: [:index, :show]
-  rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
-
-  def render_unprocessable_entity_response(invalid)
-    render json: { success: false, errors: invalid.record.errors.full_messages, message: 'Unprocessable entity' }, status: :unprocessable_entity
-  end
 
   def index
     posts = Post.paginate(page: params[:page], per_page: 10)
@@ -14,8 +9,6 @@ class Api::V1::PostsController < ApplicationController
   def show
     post = Post.find(params[:id])
     render json: { success: true, data: PostSerializer.new(post) }, status: :ok
-  rescue ActiveRecord::RecordNotFound
-    render json: { success: false, message: 'Post not found' }, status: :not_found
   end
 
   def create

@@ -1,5 +1,4 @@
 class Post < ApplicationRecord
-  #paginates_per 1
 
   belongs_to :user
 
