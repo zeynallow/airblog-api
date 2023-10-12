@@ -46,6 +46,7 @@ group :development do
   # gem "spring"
 end
 
+gem 'will_paginate', '~> 3.1', '>= 3.1.6'
 
 gem "jwt", "~> 2.7"
 

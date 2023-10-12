@@ -7,8 +7,16 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def index
-    posts = Post.all
-    render json: { success: true, data: ActiveModel::Serializer::CollectionSerializer.new(posts, serializer: PostSerializer) }, status: :ok
+    per_page = 10
+    posts = Post.paginate(page: params[:page], per_page: per_page)
+    render json: { success: true, data: ActiveModel::Serializer::CollectionSerializer.new(posts, serializer: PostSerializer),
+                   meta: {
+                     page: params[:page],
+                     per_page: per_page,
+                     total_pages: posts.total_pages,
+                     total_entries: posts.total_entries
+                   }
+    }, status: :ok
   end
 
   def show
