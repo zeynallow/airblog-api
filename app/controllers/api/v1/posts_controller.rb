@@ -7,16 +7,8 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def index
-    per_page = 10
-    posts = Post.paginate(page: params[:page], per_page: per_page)
-    render json: { success: true, data: ActiveModel::Serializer::CollectionSerializer.new(posts, serializer: PostSerializer),
-                   meta: {
-                     page: params[:page],
-                     per_page: per_page,
-                     total_pages: posts.total_pages,
-                     total_entries: posts.total_entries
-                   }
-    }, status: :ok
+    posts = Post.paginate(page: params[:page], per_page: 10)
+    render json: { success: true, data: ActiveModel::Serializer::CollectionSerializer.new(posts, serializer: PostSerializer), meta: pagination_dict(posts) }, status: :ok
   end
 
   def show
@@ -56,5 +48,6 @@ class Api::V1::PostsController < ApplicationController
   def posts_params
     params.permit(:title, :content)
   end
+
 
 end

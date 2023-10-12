@@ -1,4 +1,3 @@
-
 class ApplicationController < ActionController::API
 
   def authorize_request
@@ -12,6 +11,14 @@ class ApplicationController < ActionController::API
     rescue JWT::DecodeError => e
       render json: { success: false, message: 'Unauthorized' }, status: :unauthorized
     end
+  end
+
+  def pagination_dict(collection)
+    {
+      current_page: collection.current_page,
+      total_pages: collection.total_pages,
+      total_entries: collection.total_entries
+    }
   end
 
 end
