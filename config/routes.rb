@@ -7,16 +7,25 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
 
-    resources :users, param: :_username
-    post '/auth/sign-in', to: 'auth#signIn'
-    post '/auth/sign-up', to: 'auth#signUp'
-    #get '/*a', to: 'application#not_found'
+      post '/auth/sign-in', to: 'auth#sign_in'
+      post '/auth/sign-up', to: 'auth#sign_up'
+      # get '/*a', to: 'application#not_found'
+
+      get '/profile', to: 'profile#index'
+      put '/profile', to: 'profile#update'
+      get '/profile/:id', to: 'profile#get_user'
 
 
-    get '/posts', to: 'posts#index'
-    get '/post/:id', to: 'posts#show'
+      get '/posts', to: 'posts#index'
+      get '/post/:id', to: 'posts#show'
+      post '/post/create', to: 'posts#create'
+      put '/post/:id', to: 'posts#update'
+      delete '/post/:id', to: 'posts#delete'
 
-    end 
-  end 
+      # get '/posts', to: 'posts#index'
+      # get '/post/:id', to: 'posts#show'
+
+    end
+  end
 
 end
