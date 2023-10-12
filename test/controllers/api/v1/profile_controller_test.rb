@@ -1,6 +1,5 @@
-
 require "test_helper"
-class CommentTest < ActiveSupport::TestCase
+class Api::V1::ProfileControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

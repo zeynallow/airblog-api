@@ -14,20 +14,22 @@ default: &default
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password: zeynal
+  password:
   engine: InnoDB
-  host: 127.0.0.1
+  host: localhost
 
 development:
   <<: *default
   database: airblog_development
+
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: airblog_test
+  database: airblog_development
+
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -53,4 +55,4 @@ production:
   <<: *default
   database: airblog_production
   username: airblog
-  password: <%= ENV["AIRBLOG_DATABASE_PASSWORD"] %>
+  password:
